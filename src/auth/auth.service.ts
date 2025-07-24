@@ -2,11 +2,11 @@ import { Injectable, BadRequestException, UnauthorizedException, NotFoundExcepti
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user.entity';
-import { RegisterDto } from '../dto/register.dto';
-import { LoginDto } from '../dto/login.dto';
-import { VerifyOtpDto } from '../dto/verify-otp.dto';
-import { ResetPasswordDto } from '../dto/reset-password.dto';
-import { VerifyEmailDto } from '../dto/verify-email.dto';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 import { EmailService } from '../email.service';
 import { OtpService } from '../otp.service';
 import { JwtService } from '../jwt.service';

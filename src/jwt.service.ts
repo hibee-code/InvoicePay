@@ -1,26 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class JwtService {
-  private readonly secret: string;
+  private readonly secret: jwt.Secret;
   private readonly expiresIn: string | number;
 
   constructor(private readonly configService: ConfigService) {
-    this.secret = this.configService.get<string>('JWT_SECRET', 'changeme');
-    const expiresInConfig = this.configService.get<string>('JWT_EXPIRES_IN');
-    // If expiresInConfig is a number string, use as number, else as string, fallback to '24h'
-    this.expiresIn = expiresInConfig && !isNaN(Number(expiresInConfig))
-      ? Number(expiresInConfig)
-      : expiresInConfig || '24h';
+    this.secret = this.configService.get<string>('SECRET', 'changeme');
+    this.expiresIn = this.configService.get<string>('EXPIRES_IN') || '24h';
   }
 
-  sign(payload: any) {
-    return jwt.sign(payload, this.secret, { expiresIn: this.expiresIn });
+  sign(payload: any): string {
+    return jwt.sign(payload, this.secret, {
+      expiresIn: this.expiresIn,
+    } as jwt.SignOptions); // explicitly cast the options
   }
 
-  verify(token: string) {
+  verify(token: string): any {
     return jwt.verify(token, this.secret);
   }
-} 
+}
