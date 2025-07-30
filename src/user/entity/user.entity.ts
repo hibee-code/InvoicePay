@@ -1,17 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', length: 20 })
   phone: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   password: string;
 
   @Column({ default: false })
@@ -31,4 +37,4 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
-} 
+}
