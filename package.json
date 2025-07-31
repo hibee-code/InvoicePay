@@ -18,10 +18,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "orm:mig:gen": "sh -c 'npm run typeorm -- migration:generate src/config/migrations/$0 -d ./src/config/database/db.config.ts'",
-    "orm:mig:run": "sh -c 'npm run typeorm -- migration:run -d ./src/config/database/db.config.ts'",
-    "orm:mig:create": "sh -c 'npm run typeorm -- migration:create src/config/migrations/$0'"
+    "typeorm": "yarn ts-node ./node_modules/typeorm/cli.js",
+    "orm:mig:gen": "sh -c 'yarn typeorm migration:generate src/config/migrations/$0 -d ./src/config/database/db.config.ts'",
+    "orm:mig:run": "sh -c 'yarn typeorm migration:run -d ./src/config/database/db.config.ts'",
+    "orm:mig:create": "sh -c 'yarn typeorm migration:create src/config/migrations/$0'"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -34,7 +34,7 @@
     "pg": "^8.14.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.22"
+    "typeorm": "^0.3.25"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

@@ -10,7 +10,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.DB_PASSWORD,
   port: parseInt(process.env.DB_PORT || '5432'),
   host: process.env.DB_HOST,
-  entities:[pathFromSrc('src/**/*.entity.{js,ts}')],
+  entities:['src/**/*.entity.{js,ts}'],
   migrations: [pathFromSrc('config/migrations/**/*.{js,ts}')],
 };
 const dataSource = new DataSource(dataSourceOptions);

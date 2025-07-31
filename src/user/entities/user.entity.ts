@@ -26,7 +26,7 @@ export class User {
   @Column({ default: false })
   isPhoneVerified: boolean;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   otp: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
