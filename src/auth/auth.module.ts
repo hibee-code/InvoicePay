@@ -7,10 +7,12 @@ import { EmailService } from '../email.service';
 import { OtpService } from '../otp.service';
 import { JwtService } from '../jwt.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from './jwt.strategy';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), ConfigModule],
-  providers: [AuthService, EmailService, OtpService, JwtService, ConfigService],
+  providers: [AuthService, EmailService, OtpService, JwtService, ConfigService, JwtStrategy, JwtAuthGuard],
   controllers: [AuthController],
 })
-export class AuthModule {} 
+export class AuthModule {}

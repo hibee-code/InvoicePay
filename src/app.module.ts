@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './config/database/db.config';
+import { BusinessModule } from './business/business.module';
+import { InvoiceModule } from './invoice/invoice.module';
 
 
 @Module({
@@ -12,6 +14,8 @@ import { dataSourceOptions } from './config/database/db.config';
     TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
     UserModule,
+    BusinessModule,
+    InvoiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
