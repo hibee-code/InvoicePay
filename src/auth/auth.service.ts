@@ -7,9 +7,9 @@ import { LoginDto } from './dto/login.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
-import { EmailService } from '../email.service';
-import { OtpService } from '../otp.service';
-import { JwtService } from '../jwt.service';
+import { EmailService } from '../email/email.service';
+import { OtpService } from '../otp/otp.service';
+import { JwtService } from '../jwt/jwt.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()

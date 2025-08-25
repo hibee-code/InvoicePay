@@ -4,12 +4,16 @@ import { Repository } from 'typeorm';
 import { Invoice } from './entities/invoice.entity';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { InvoiceStatus } from './enum/invoice-enum.enum';
+import { EmailService } from '../email/email.service';
+import { PdfService } from './pdf.service';
 
 @Injectable()
 export class InvoiceService {
   constructor(
     @InjectRepository(Invoice)
     private readonly invoiceRepository: Repository<Invoice>,
+    private readonly emailService: EmailService,
+    private readonly pdfService: PdfService,
   ) {}
 
   async createInvoice(invoiceDto: CreateInvoiceDto) {
@@ -31,22 +35,26 @@ export class InvoiceService {
   }
 
   async sendInvoice(id: string) {
-    // TODO: Integrate with email service
     const invoice = await this.getInvoiceById(id);
     if (!invoice) throw new Error('Invoice not found');
     invoice.status = InvoiceStatus.SENT;
     await this.invoiceRepository.save(invoice);
-    // Simulate sending email
+    // Generate PDF
+    const pdfBuffer = await this.pdfService.generateInvoicePdf(invoice);
+    // Send email with PDF attachment
+    await this.emailService.sendEmail(
+      invoice.recipientEmail,
+      'Your Invoice',
+      `Please find your invoice attached.`,
+      pdfBuffer
+    );
     return { success: true, message: 'Invoice sent', invoice };
   }
 
   async getInvoicePdf(id: string) {
-    // TODO: Integrate with PDF generation
     const invoice = await this.getInvoiceById(id);
     if (!invoice) throw new Error('Invoice not found');
-    // Simulate PDF URL
-    invoice.pdfUrl = `https://example.com/invoice/${id}.pdf`;
-    await this.invoiceRepository.save(invoice);
-    return { pdfUrl: invoice.pdfUrl };
+    const pdfBuffer = await this.pdfService.generateInvoicePdf(invoice);
+    return pdfBuffer;
   }
 }

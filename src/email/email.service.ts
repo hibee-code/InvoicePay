@@ -7,8 +7,8 @@ export class EmailService {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
   }
 
-  async sendEmail(to: string, subject: string, text: string) {
-    const msg = {
+  async sendEmail(to: string, subject: string, text: string, pdfBuffer?: Buffer) {
+    const msg: any = {
       to,
       from: {
         email: process.env.FROM_EMAIL || 'noreply@invoicepay.com',
@@ -17,6 +17,16 @@ export class EmailService {
       subject,
       text,
     };
+    if (pdfBuffer) {
+      msg.attachments = [
+        {
+          content: pdfBuffer.toString('base64'),
+          filename: 'invoice.pdf',
+          type: 'application/pdf',
+          disposition: 'attachment',
+        },
+      ];
+    }
     try {
       await sgMail.send(msg);
       return true;
@@ -25,4 +35,6 @@ export class EmailService {
       return false;
     }
   }
+
+  
 } 
