@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { InvoiceStatus } from '../enum/invoice-enum.enum';
+import { Business } from 'src/business/entities/business.entity';
 
 @Entity()
 export class Invoice {
@@ -26,6 +27,11 @@ amount: number;
 
  @Column({ type: 'varchar', length: 255, nullable: true })
   pdfUrl?: string;
+
+  //relation
+
+  @ManyToOne(() => Business, business => business.invoices)
+business: Business;
 
  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

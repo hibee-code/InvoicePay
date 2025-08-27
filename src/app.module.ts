@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -12,6 +13,10 @@ import { JwtModule } from './jwt/jwt.module';
 import { OtpModule } from './otp/otp.module';
 import { PaymentModule } from './payment/payment.module';
 import { WalletModule } from './wallet/wallet.module';
+import { AuditModule } from './audit/audit.module';
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { RateLimitGuard } from './common/rate-limit/rate-limit.guard';
+import { PrometheusMetrics } from './common/monitoring/prometheus-metrics';
 
 
 @Module({
@@ -26,9 +31,15 @@ import { WalletModule } from './wallet/wallet.module';
     OtpModule,
     PaymentModule,
     WalletModule,
+    AuditModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    PrometheusMetrics,
+    { provide: APP_FILTER, useClass: GlobalExceptionFilter },
+    { provide: APP_GUARD, useClass: RateLimitGuard },
+  ],
 })
 export class AppModule {}
 

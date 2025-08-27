@@ -1,5 +1,6 @@
 
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Business } from 'src/business/entities/business.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class VirtualAccount {
@@ -16,7 +17,12 @@ export class VirtualAccount {
     bankName: string;
 
     @Column({ type: 'varchar', length: 100, nullable: true })
-    providerRef: string
+    providerRef?: string;
+    
+    //relation 
+    @ManyToOne(() => Business, business => business.virtualAccounts)
+    business: Business;
+
 
     @CreateDateColumn({ type: 'timestamp with time zone' })
     createdAt: Date;
