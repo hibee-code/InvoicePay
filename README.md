@@ -1,115 +1,106 @@
 
-# InvoicePay – Backend API
+ # InvoicePay
 
-InvoicePay is a modular, production-ready backend for smart invoicing, payments, and wallet management for SMEs and freelancers. Built with NestJS, PostgreSQL, and scalable best practices.
+ InvoicePay is a production-ready fintech backend built with NestJS, TypeORM, and PostgreSQL. It provides secure, scalable, and auditable APIs for business onboarding, invoicing, payments, wallet management, withdrawals, and admin operations, with full compliance and monitoring.
 
-## Features
-- User registration/login (email, phone, OTP)
-- Password reset, email verification
-- Business onboarding with KYC
-- Invoice creation, sending, PDF generation
-- Interswitch Virtual Account API integration
-- Payment webhook handling
-- Wallet system (balance, transaction tracking)
-- Admin panel (monitoring, business management)
-- JWT authentication, modular architecture
+ ## Features
 
-## Getting Started
+ - **Authentication & Authorization**: JWT-based, secure endpoints for users and admins.
+ - **Business Onboarding**: KYC-compliant onboarding, encrypted data, and business management.
+ - **Invoice Management**: Create, send, and track invoices with PDF generation.
+ - **Payment Processing**: Virtual account creation, payment webhooks, and external API integration (Interswitch).
+ - **Wallet System**: Transactional wallet updates, withdrawal requests, and fund transfers.
+ - **Admin Panel**: Approve/reject withdrawals, manage businesses, monitor system health.
+ - **Audit Logging**: All critical actions are logged for compliance and traceability.
+ - **Rate Limiting & Monitoring**: Global exception filter, Prometheus metrics, and request guards.
+ - **Error Handling**: Centralized error management for robust API responses.
 
-### Prerequisites
-- Node.js v16+
-- PostgreSQL
-- Redis (optional, for queues)
+ ## Tech Stack
 
-### Installation
-```bash
-yarn install
-```
+ - **NestJS** (v11+)
+ - **TypeORM**
+ - **PostgreSQL**
+ - **SendGrid** (email)
+ - **pdfkit** (PDF generation)
+ - **prom-client** (Prometheus metrics)
+ - **axios** (external API calls)
 
-### Environment Setup
-Create a `.env` file in the project root:
-```
-NODE_ENV=development
-PORT=3000
-DB_NAME=invoicepay
-DB_USER=your_db_user
-DB_PASSWORD=your_db_password
-DB_HOST=localhost
-DB_PORT=5432
-SENDGRID_API_KEY=your_sendgrid_key
-FROM_EMAIL=noreply@invoicepay.com
-FROM_NAME=InvoicePay
-INTERSWITCH_CLIENT_ID=your_interswitch_client_id
-INTERSWITCH_CLIENT_SECRET=your_interswitch_client_secret
-INTERSWITCH_VBA_URL=https://sandbox.interswitchng.com/api/vba
-INTERSWITCH_WEBHOOK_SECRET=your_webhook_secret
-JWT_SECRET=your_jwt_secret
-```
+ ## Folder Structure
 
-### Database Setup
-Create the database and run migrations:
-```bash
-yarn migration:up
-```
+ ```
+ src/
+	 ├── app.*                # Main app bootstrap
+	 ├── auth/                # Authentication module
+	 ├── user/                # User management
+	 ├── business/            # Business onboarding & management
+	 ├── invoice/             # Invoice creation & tracking
+	 ├── payment/             # Payment processing & virtual accounts
+	 ├── wallet/              # Wallet, transactions, withdrawals
+	 ├── admin/               # Admin panel & operations
+	 ├── audit/               # Audit logging
+	 ├── common/              # Filters, guards, monitoring
+	 ├── config/              # Database & helpers
+	 └── ...
+ ```
 
-### Running the App
-```bash
-yarn start:dev
-```
+ ## Getting Started
 
-## API Endpoints
+ ### Prerequisites
+ - Node.js v18+
+ - PostgreSQL
 
-### Authentication
-- `POST /auth/register` – Register new user
-- `POST /auth/login` – Login user
-- `POST /auth/verify-otp` – Verify OTP
-- `POST /auth/reset-password` – Reset password
+ ### Installation
+ ```bash
+ # Clone the repository
+ git clone https://github.com/hibee-code/InvoicePay.git
+ cd InvoicePay
 
-### Business
-- `POST /business/onboard` – Onboard new business (KYC)
-- `GET /business/profile/:id` – Get business profile
+ # Install dependencies
+ npm install
 
-### Invoice
-- `POST /invoice` – Create invoice
-- `GET /invoice/:id` – Get invoice by ID
-- `GET /invoice/business/:businessId` – List invoices for business
-- `POST /invoice/:id/send` – Send invoice (email/PDF)
-- `GET /invoice/:id/pdf` – Download invoice PDF
+ # Configure environment variables
+ cp .env.example .env
+ # Edit .env with your database and API keys
+ ```
 
-### Payment
-- `POST /payment/virtual-account` – Generate virtual account
-- `POST /payment/webhook` – Handle payment notification
+ ### Database Setup
+ ```bash
+ # Run migrations (if using TypeORM CLI)
+ yarn typeorm migration:run
+ ```
 
-### Wallet
-- `GET /wallet/:businessId` – Get wallet balance
-- `GET /wallet/transactions/:walletId` – List wallet transactions
+ ### Running the Application
+ ```bash
+ # Start the server
+ yarn start:dev
+ ```
 
-### Admin
-- `GET /admin/businesses` – List all businesses
-- `PATCH /admin/business/:id/suspend` – Suspend business
-- `PATCH /admin/business/:id/reactivate` – Reactivate business
-- `GET /admin/logs` – View system logs
+ ### Testing
+ ```bash
+ # Run unit and e2e tests
+ yarn run test
+ yarn run test:e2e
+ ```
 
-## Testing
-```bash
-yarn test
-yarn test:e2e
-yarn test:cov
-```
+ ## API Documentation
+ - See `api-specification.md` for detailed endpoint documentation.
+ - All endpoints follow RESTful standards and return consistent error formats.
 
-## Deployment
-- Build: `yarn build`
-- Start: `yarn start:prod`
-- Use Docker or CI/CD for production deployment
+ ## Compliance & Security
+ - All sensitive operations are logged in the audit module.
+ - KYC data is encrypted at rest.
+ - Rate limiting and monitoring are enabled by default.
+ - External API integrations are validated and secure.
 
-## Security & Production
-- All sensitive endpoints require JWT
-- Webhook requests validated by secret
-- Environment variables for all credentials
-- Modular, scalable codebase
+ ## Monitoring
+ - Prometheus metrics available at `/metrics` endpoint.
 
-## Contributing
-PRs and issues welcome! See the code for modular structure and best practices.
+ ## Contributing
+ Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## License
-MIT
+ ## License
+ [MIT](LICENSE)
+
+ ## Maintainers
+ - hibee-code
+
