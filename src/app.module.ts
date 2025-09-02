@@ -17,10 +17,14 @@ import { AuditModule } from './audit/audit.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { RateLimitGuard } from './common/rate-limit/rate-limit.guard';
 import { PrometheusMetrics } from './common/monitoring/prometheus-metrics';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // 👈 makes ConfigService available everywhere
+    }),
     TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
     UserModule,
