@@ -1,16 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, OneToOne, Index } from 'typeorm';
 import { KycStatus } from '../enum/kyc-status.enum';
-import { Invoice } from 'src/invoice/entities/invoice.entity';
-import { VirtualAccount } from 'src/payment/entities/virtual-account.entity';
-import { User } from 'src/user/entities/user.entity';
-import { Wallet } from 'src/wallet/entities/wallet.entity';
+import { Invoice } from '../../invoice/entities/invoice.entity';
+import { VirtualAccount } from '../../payment/entities/virtual-account.entity';
+import { User } from '../../user/entities/user.entity';
+import { Wallet } from '../../wallet/entities/wallet.entity';
 
 @Entity()
 export class Business {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: string;
 
-  @Column({  type: 'varchar', unique: true })
+  @Index()
+  @Column({ type: 'varchar', unique: true })
   businessName: string;
 
   @Column({ type: 'varchar', length: 50, unique: true })

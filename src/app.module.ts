@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,16 +16,17 @@ import { WalletModule } from './wallet/wallet.module';
 import { AuditModule } from './audit/audit.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { RateLimitGuard } from './common/rate-limit/rate-limit.guard';
-import { PrometheusMetrics } from './common/monitoring/prometheus-metrics';
+import { LoggingMiddleware } from './common/middleware/logging.middleware';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config';
-
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true, // 👈 makes ConfigService available everywhere
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dataSourceOptions),
+    PrometheusModule.register(),
+    CacheModule.register({ isGlobal: true }),
     AuthModule,
     UserModule,
     BusinessModule,
@@ -40,10 +41,12 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [AppController],
   providers: [
     AppService,
-    PrometheusMetrics,
     { provide: APP_FILTER, useClass: GlobalExceptionFilter },
     { provide: APP_GUARD, useClass: RateLimitGuard },
   ],
 })
-export class AppModule {}
-
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+  }
+}

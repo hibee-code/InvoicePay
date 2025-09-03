@@ -5,7 +5,7 @@ dotenv.config();
 
 
 export const dataSourceOptions: DataSourceOptions = {
-   type: 'postgres',
+  type: 'postgres',
   database: process.env.DB_NAME,
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -15,6 +15,10 @@ export const dataSourceOptions: DataSourceOptions = {
   migrations: [join(__dirname, '../migrations/**/*.{ts,js}')],
   synchronize: false,
   logging: true,
+  extra: {
+    max: 20,
+    idleTimeoutMillis: 30000,
+  },
 };
 const dataSource = new DataSource(dataSourceOptions);
 export default dataSource;

@@ -1,4 +1,4 @@
-import { AuditLog } from 'src/audit/entities/audit-log.entity';
+import { AuditLog } from '../../audit/entities/audit-log.entity';
 import { Business } from '../../business/entities/business.entity';
 import {
   Entity,

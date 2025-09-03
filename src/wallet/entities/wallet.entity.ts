@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne } from 'typeorm';
 import { WalletTransaction } from './wallet-transaction.entity';
-import { Business } from 'src/business/entities/business.entity';
+import { Business } from '../../business/entities/business.entity';
 
 @Entity()
 export class Wallet {

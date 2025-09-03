@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { InvoiceStatus } from '../enum/invoice-enum.enum';
-import { Business } from 'src/business/entities/business.entity';
+import { Business } from '../../business/entities/business.entity';
 
 @Entity()
 export class Invoice {
