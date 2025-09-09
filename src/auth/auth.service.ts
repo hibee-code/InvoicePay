@@ -9,7 +9,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { EmailService } from '../email/email.service';
 import { OtpService } from '../otp/otp.service';
-import { JwtService } from '../jwt/jwt.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -19,9 +19,8 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
     private readonly emailService: EmailService,
     private readonly otpService: OtpService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService, 
   ) {}
-
   async register(dto: RegisterDto) {
     const existing = await this.userRepository.findOne({
       where: [{ email: dto.email }, { phone: dto.phone }],
@@ -34,7 +33,7 @@ export class AuthService {
       phone: dto.phone,
       password: hashed,
       otp,
-      otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
+      otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000), 
     });
     await this.userRepository.save(user);
     await this.otpService.sendOtp(dto.phone, otp);
@@ -89,7 +88,7 @@ export class AuthService {
     const user = await this.userRepository.findOne({ where: { email: dto.email } });
     if (!user) throw new NotFoundException('User not found');
     // For demo, treat token as OTP
-    if (!user.otp || user.otp !== dto.token) throw new BadRequestException('Invalid token');
+    if (!user.otp || user.otp !== dto.otp) throw new BadRequestException('Invalid token');
     if (user.otpExpiresAt && user.otpExpiresAt < new Date()) throw new BadRequestException('Token expired');
     user.isEmailVerified = true;
     user.otp = null;
